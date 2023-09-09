@@ -1,12 +1,15 @@
 import React from 'react';
+import Banner from './components/Banner';
+import TopPicks from './components/TopPicks';
+import LimitedTimes from './components/LimitedTimes';
+import './index.css';
 
 function App() {
   return (
     <div>
-      <div className="ml-5">
-        <p className="text-sm font-medium text-gray-900">Muhammad Ammar</p>
-        <p className="text-sm text-gray-500">emr@gmail.com</p>
-      </div>
+      <Banner />
+      <LimitedTimes />
+      <TopPicks />
     </div>
   );
 }
