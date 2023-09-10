@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import ViewPort from '../../common/ViewPort';
 import { PiHandbag, PiMagnifyingGlassLight } from 'react-icons/pi';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
 
-const Banner = () => {
+const Banner = (props) => {
+  const { handleNav } = props;
   const [curImage, setCurImage] = useState(0);
 
   const urls = [
@@ -13,6 +16,7 @@ const Banner = () => {
 
   const handleLeft = () => {
     setCurImage((prev) => (prev + 1) % urls.length);
+    handleNav();
   };
 
   const handleRight = () => {
@@ -101,3 +105,7 @@ const Banner = () => {
 };
 
 export default Banner;
+
+Banner.propTypes = {
+  handleNav: PropTypes.func.isRequired,
+};
