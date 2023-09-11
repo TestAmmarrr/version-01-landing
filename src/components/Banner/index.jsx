@@ -1,26 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import ViewPort from '../../common/ViewPort';
-import { PiHandbag, PiMagnifyingGlassLight } from 'react-icons/pi';
+import {
+  PiHandbag,
+  PiMagnifyingGlassLight,
+  PiInstagramLogo,
+  PiFacebookLogoFill,
+} from 'react-icons/pi';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
+import { FiChevronDown } from 'react-icons/fi';
+
+const oneSecond = 10000;
 
 const Banner = (props) => {
   const { handleNav } = props;
   const [curImage, setCurImage] = useState(0);
+  const [curAdSlider, setCurSlider] = useState(0);
+  const [isFirstVisible, setIsFirstVisible] = useState(true);
+  const [showList, setShowList] = useState(false);
+  const [currencies] = useState([
+    {
+      name: 'Pakistan',
+      cur: 'PKR RS',
+      img: 'https://flagpedia.net/data/flags/w702/pk.webp',
+    },
+    {
+      name: 'United States',
+      cur: 'USD $',
+      img: 'https://th.bing.com/th/id/OIP.SpEXTWq8AnZChYLI-jFbJgHaHa?pid=ImgDet&rs=1',
+    },
+  ]);
+  const [activeCurrency, setCurrency] = useState({
+    name: 'Pakistan',
+    cur: 'PKR RS',
+    img: 'https://flagpedia.net/data/flags/w702/pk.webp',
+  });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsFirstVisible(!isFirstVisible);
+      setCurSlider((prev) => (prev + 1) % sliderText.length);
+      setCurImage((prev) => (prev - 1 + urls.length) % urls.length);
+    }, oneSecond);
+    return () => clearTimeout(timer);
+  }, [isFirstVisible]);
 
   const urls = [
-    'https://impulse-theme-apparel.myshopify.com/cdn/shop/files/15876107_239973393095862_789381904871718912_n.jpg?v=1614295740',
-    'https://impulse-theme-apparel.myshopify.com/cdn/shop/files/65955690_126110058657394_731988299311526372_n.jpg?v=1614295740',
+    'https://images.unsplash.com/photo-1625425727345-d8423ee9a4fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1935&q=80',
+    'https://images.unsplash.com/photo-1663079899610-2f00543940cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80',
+  ];
+
+  const sliderText = [
+    { emphasis: 'Free Shipping', normal: 'on all Orders over 100$' },
+    { emphasis: 'Hassle-Free Returns', normal: '30-day postage paid returns' },
+    { emphasis: 'Free Shipping', normal: 'on all Orders over 100$' },
+    { emphasis: 'Hassle-Free Returns', normal: '30-day postage paid returns' },
   ];
 
   const handleLeft = () => {
     setCurImage((prev) => (prev + 1) % urls.length);
-    handleNav();
+    handleNav('nav');
   };
 
   const handleRight = () => {
     setCurImage((prev) => (prev - 1 + urls.length) % urls.length);
+  };
+
+  const handleCurrencyChange = (currency) => {
+    setCurrency(currency);
+    setShowList(false);
+  };
+
+  const toggleStateList = () => {
+    setShowList((prev) => !prev);
   };
 
   return (
@@ -42,29 +95,87 @@ const Banner = (props) => {
             loading="lazy"
           />
         ))}
-        {/**FREE SHIPPING ADVERTISEMENT*/}
-        <div className="relative z-10 flex items-center justify-center bg-black py-3 text-white">
-          <p className="w-full text-center text-xs md:w-auto">
-            <span className="block font-bold uppercase tracking-widest md:inline">
-              Free Shipping{' '}
-            </span>
-            On all orders over 100$
-          </p>
+        {/**FREE SHIPPING ANNOUNCEMENT*/}
+        <div className="relative z-10 flex items-center justify-center bg-black py-6 text-white md:py-5">
+          {sliderText.map((item, index) => (
+            <p
+              key={index}
+              className={`absolute w-full text-center text-xs transition-all duration-1000 md:w-auto ${
+                index === curAdSlider
+                  ? 'translate-x-0 opacity-100'
+                  : index < curAdSlider
+                  ? 'translate-x-[-400%] opacity-0'
+                  : 'translate-x-full opacity-0'
+              }`}
+            >
+              <span className="block font-bold uppercase tracking-widest md:inline">
+                {item.emphasis}
+              </span>
+              {item.normal}
+            </p>
+          ))}
         </div>
-        {/**LOCATION / SOCIALS / PAYMENT*/}
+        {/**LOCATION / SOCIALS / LANGUAGE*/}
         <div className="relative mx-10 hidden h-9 items-center justify-end border-b-2 border-white border-opacity-[0.3] bg-transparent text-sm text-white md:flex">
           <div className="grow font-medium">337 Street Gulshan, KHI</div>
-          <div className=" px-10 text-right" style={{ flexGrow: 2 }}>
-            337 Street Gulshan, KHI
+          <div className=" flex-1" style={{ flexGrow: 15 }}>
+            <ul className="flex justify-end space-x-2">
+              <li className="h-5 w-5  ">
+                <PiInstagramLogo className="h-full w-full" />
+              </li>
+              <li className=" h-5 w-5">
+                <PiFacebookLogoFill className="h-full w-full" />
+              </li>
+            </ul>
           </div>
-          <div className="grow">337 Street Gulshan, KHI</div>
+          <div className=" relative flex grow justify-end font-semibold">
+            <button className="flex w-52 justify-end" onClick={() => toggleStateList()}>
+              <div className=" flex h-6 w-auto items-center">
+                <img
+                  className="h-5 w-5 rounded-[100%] object-cover"
+                  src={activeCurrency.img}
+                  alt=""
+                />
+                <p className="ml-2">{`${activeCurrency.name} (${activeCurrency.cur})`}</p>
+              </div>
+              <FiChevronDown className="h-6 w-6" />
+            </button>
+            <ul
+              className={` absolute top-7 z-10 h-auto  w-72 bg-white pt-2 ${
+                !showList && 'hidden'
+              }`}
+            >
+              {currencies.map((curr, index) => (
+                <li key={index} className="px-4 py-2 text-xs text-black">
+                  <button
+                    onClick={() => handleCurrencyChange(curr)}
+                    className="flex w-52 items-center justify-start space-x-2 "
+                  >
+                    <div className=" h-5 w-5 ">
+                      <img
+                        className=" h-full w-full rounded-[100%] object-cover"
+                        src={curr.img}
+                        alt=""
+                      />
+                    </div>
+                    <p className="relative before:absolute before:bottom-0 before:h-[0.5px] before:w-0 before:bg-black hover:before:w-full">
+                      {`${curr.name} (${curr.cur})`}
+                    </p>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         {/**BRAND / NAV / SEARCH / CART / TILES*/}
-        <div className="relative flex h-12 items-center justify-end bg-transparent px-5 text-white md:px-10">
+        <div className="relative flex h-12 items-center justify-end px-5 text-white md:px-10">
           <div className="flex-1 text-3xl font-bold uppercase">SYMPH DZLS.</div>
           <div className=" flex space-x-5 text-right">
             <PiMagnifyingGlassLight className=" h-8 w-8" />
-            <PiHandbag className=" h-8 w-8" />
+            <PiHandbag
+              className=" h-8 w-8 cursor-pointer"
+              onClick={() => handleNav('cart')}
+            />
           </div>
         </div>
         {/** Actions */}
