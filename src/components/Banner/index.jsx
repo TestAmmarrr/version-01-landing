@@ -77,6 +77,22 @@ const Banner = (props) => {
     setShowList((prev) => !prev);
   };
 
+  const handleDrag = (e) => {
+    if (e.clientX > window.innerWidth / 2) {
+      handleRight();
+    } else {
+      handleLeft();
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'ArrowRight') {
+      handleRight();
+    } else if (e.key === 'ArrowLeft') {
+      handleLeft();
+    }
+  };
+
   return (
     <ViewPort>
       <div className="relative h-full w-full">
@@ -84,6 +100,9 @@ const Banner = (props) => {
           {/**BANNER IMAGES*/}
           {urls.map((url, index) => (
             <img
+              onDrag={handleDrag}
+              onKeyDown={handleKeyPress}
+              tabIndex="0"
               loading="lazy"
               key={index}
               src={url}
@@ -97,6 +116,7 @@ const Banner = (props) => {
               }`}
             />
           ))}
+
           {/**FREE SHIPPING ANNOUNCEMENT*/}
           <div className="relative z-10 flex items-center justify-center bg-black py-6 text-white md:py-5">
             {sliderText.map((item, index) => (
