@@ -11,9 +11,9 @@ const Item = (props) => {
           {secondary}
         </p>
         <p className="py-2 text-3xl font-bold text-white">{primary}</p>
-        <buttons className="mt-2 border-0 bg-black px-5 py-2 text-xs font-bold uppercase tracking-widest text-white">
+        <button className="mt-2 border-0 bg-black px-5 py-2 text-xs font-bold uppercase tracking-widest text-white">
           {buttonText}
-        </buttons>
+        </button>
       </div>
     </div>
   );

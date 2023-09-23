@@ -59,7 +59,6 @@ const CartContent = (props) => {
 
   const items = () => {
     const { cartItems } = cartInfo;
-    console.log(cartItems);
     if (Object.entries(cartItems).length < 1) {
       return <p>Your cart is currently empty.</p>;
     }
