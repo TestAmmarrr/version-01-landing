@@ -108,7 +108,7 @@ function Home(props) {
       {currentItem ? (
         <>
           <Banner handleNav={handleNav} footerComponent={renderBannerFooter} />
-          <Details addToCart={addToCart} />
+          <Details addToCart={addToCart} currentItem={currentItem} />
         </>
       ) : (
         <>

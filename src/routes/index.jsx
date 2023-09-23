@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Home from '../components/Home';
 import Items from '../components/Items';
 import Details from '../components/Detail';
 
 const RouteHandler = (props) => {
   const { handleNav } = props;
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]); // triggered on route change
+
   return (
     <Routes>
       <Route path="/" element={<Home handleNav={handleNav} />} />
