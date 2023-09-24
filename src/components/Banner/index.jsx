@@ -10,9 +10,21 @@ import {
 } from 'react-icons/pi';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
 import { FiChevronDown } from 'react-icons/fi';
+import { FaTimes } from 'react-icons/fa';
 import CartContext from '../../context/CartContext';
+import Overlay from '../Overlay';
 
 const oneSecond = 10000;
+
+// NAVSTYLES
+const NAV_FIXED =
+  'flex h-16 items-center justify-end px-5 text-white transition-transform duration-500 md:px-10 relative bg-transparent';
+const NAV_DYNAMIC =
+  'flex h-16 items-center justify-end px-5 text-white transition-transform duration-500 md:px-10 fixed inset-x-0 top-0 z-30 translate-y-0 bg-white';
+const NAV_ITEMS_FIXED = 'flex space-x-5 text-right text-white';
+const NAV_ITEMS_DYNAMIC = 'flex space-x-5 text-right text-black';
+const NAV_SEARCH_ACTIVE = ' h-8 w-8 text-black';
+const NAV_SEARCH = ' h-8 w-8';
 
 const Banner = (props) => {
   const { handleNav, footerComponent, handleScroll } = props;
@@ -23,6 +35,7 @@ const Banner = (props) => {
   const [curAdSlider, setCurSlider] = useState(0);
   const [isFirstVisible, setIsFirstVisible] = useState(true);
   const [showList, setShowList] = useState(false);
+  const [search, setSearch] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [currencies] = useState([
     {
@@ -109,6 +122,61 @@ const Banner = (props) => {
     } else if (e.key === 'ArrowLeft') {
       handleLeft();
     }
+  };
+
+  const renderSearchBar = () => {
+    return (
+      <div className="relative flex h-full w-full items-center justify-center bg-white">
+        <form className="relative z-50 flex h-4/5 w-4/5 max-w-[1500px] items-center">
+          <input
+            type="text"
+            aria-label="search"
+            autoFocus
+            placeholder="Search our store"
+            className="h-full w-full rounded-none border-black bg-white p-4 text-black focus:border-2 focus:outline-none"
+          />
+          <div className="absolute right-4 top-[10px]">
+            <PiMagnifyingGlassLight
+              className={search ? NAV_SEARCH_ACTIVE : NAV_SEARCH}
+              onClick={() => setSearch((prev) => !prev)}
+            />
+          </div>
+        </form>
+        <div className="ml-4">
+          <FaTimes className="h-7 w-7 text-black" />
+        </div>
+      </div>
+    );
+  };
+
+  const renderNavContent = () => {
+    if (search) {
+      return renderSearchBar();
+    }
+    return renderNavItems();
+  };
+
+  const renderNavItems = () => {
+    return (
+      <>
+        <div className="flex-1 text-3xl font-bold uppercase">SYMPH DZLS.</div>
+        <div className={isScrolled ? NAV_ITEMS_DYNAMIC : NAV_ITEMS_FIXED}>
+          <PiMagnifyingGlassLight
+            className={search ? NAV_SEARCH_ACTIVE : NAV_SEARCH}
+            onClick={() => setSearch((prev) => !prev)}
+          />
+          <div className="relative">
+            <PiHandbag
+              className=" h-8 w-8 cursor-pointer"
+              onClick={() => handleNav('cart')}
+            />
+            {Object.entries(cartItems).length > 0 && (
+              <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-red-800"></span>
+            )}
+          </div>
+        </div>
+      </>
+    );
   };
 
   return (
@@ -211,29 +279,11 @@ const Banner = (props) => {
           </div>
           {/**BRAND / NAV / SEARCH / CART / TILES*/}
           <div
-            className={`flex h-16 items-center justify-end px-5 text-white transition-transform duration-500 md:px-10 ${
-              isScrolled
-                ? 'fixed inset-x-0 top-0 z-50 translate-y-0 bg-white'
-                : 'relative bg-transparent'
+            className={`${isScrolled ? NAV_DYNAMIC : NAV_FIXED} ${
+              search ? 'px-0 md:px-0' : ''
             }`}
           >
-            <div className="flex-1 text-3xl font-bold uppercase">SYMPH DZLS.</div>
-            <div
-              className={`flex space-x-5 text-right ${
-                isScrolled ? 'text-black' : 'text-white'
-              }`}
-            >
-              <PiMagnifyingGlassLight className=" h-8 w-8" />
-              <div className="relative">
-                <PiHandbag
-                  className=" h-8 w-8 cursor-pointer"
-                  onClick={() => handleNav('cart')}
-                />
-                {Object.entries(cartItems).length > 0 && (
-                  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-red-800"></span>
-                )}
-              </div>
-            </div>
+            {renderNavContent()}
           </div>
           {footerComponent ? (
             footerComponent()
@@ -283,6 +333,7 @@ const Banner = (props) => {
           </div>
         )}
       </div>
+      <Overlay overlayVisible={search} disableOverlay={() => setSearch(false)} />
     </ViewPort>
   );
 };
