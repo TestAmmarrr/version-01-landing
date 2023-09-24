@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const Item = (props) => {
   const { img, buttonText, primary, secondary } = props;
   return (
-    <div className="relative h-full w-full flex-1">
+    <div className="relative h-72 w-full flex-1 md:h-full">
       <img src={img} alt="" className=" h-full w-full object-cover " loading="lazy" />
       <div className="absolute bottom-5 left-5 px-2 py-5">
         <p className="text-sm font-semibold uppercase tracking-widest text-white">

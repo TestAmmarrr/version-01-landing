@@ -12,11 +12,7 @@ const Details = (props) => {
     <div className="h-auto max-w-[1500px] overflow-auto md:m-auto md:mt-5 md:grid md:grid-cols-2 md:space-x-3 md:px-5">
       <div className="md:sticky md:top-1">
         <div className="m-auto border px-20 py-2 md:p-5">
-          <img
-            src="https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey2.gif?v=1569267104"
-            alt=""
-            className=" h-full w-full object-cover"
-          />
+          <img src={currentItem.img} alt="" className=" h-full w-full object-cover" />
         </div>
       </div>
       {/**Nav + Name */}

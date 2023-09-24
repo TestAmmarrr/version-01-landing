@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 import ViewPort from '../../common/ViewPort';
@@ -10,15 +10,20 @@ import {
 } from 'react-icons/pi';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
 import { FiChevronDown } from 'react-icons/fi';
+import CartContext from '../../context/CartContext';
 
 const oneSecond = 10000;
 
 const Banner = (props) => {
-  const { handleNav, footerComponent } = props;
+  const { handleNav, footerComponent, handleScroll } = props;
+
+  const cartInfo = useContext(CartContext);
+
   const [curImage, setCurImage] = useState(0);
   const [curAdSlider, setCurSlider] = useState(0);
   const [isFirstVisible, setIsFirstVisible] = useState(true);
   const [showList, setShowList] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [currencies] = useState([
     {
       name: 'Pakistan',
@@ -45,6 +50,19 @@ const Banner = (props) => {
     }, oneSecond);
     return () => clearTimeout(timer);
   }, [isFirstVisible]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', checkScroll);
+    return () => {
+      window.removeEventListener('scroll', checkScroll);
+    };
+  }, []);
+
+  const { cartItems } = cartInfo;
+
+  const checkScroll = () => {
+    setIsScrolled(window.scrollY > 150);
+  };
 
   const navigate = useNavigate();
 
@@ -192,14 +210,29 @@ const Banner = (props) => {
             </div>
           </div>
           {/**BRAND / NAV / SEARCH / CART / TILES*/}
-          <div className="relative mt-3 flex h-12 items-center justify-end px-5 text-white md:px-10">
+          <div
+            className={`flex h-16 items-center justify-end px-5 text-white transition-transform duration-500 md:px-10 ${
+              isScrolled
+                ? 'fixed inset-x-0 top-0 z-50 translate-y-0 bg-white'
+                : 'relative bg-transparent'
+            }`}
+          >
             <div className="flex-1 text-3xl font-bold uppercase">SYMPH DZLS.</div>
-            <div className=" flex space-x-5 text-right">
+            <div
+              className={`flex space-x-5 text-right ${
+                isScrolled ? 'text-black' : 'text-white'
+              }`}
+            >
               <PiMagnifyingGlassLight className=" h-8 w-8" />
-              <PiHandbag
-                className=" h-8 w-8 cursor-pointer"
-                onClick={() => handleNav('cart')}
-              />
+              <div className="relative">
+                <PiHandbag
+                  className=" h-8 w-8 cursor-pointer"
+                  onClick={() => handleNav('cart')}
+                />
+                {Object.entries(cartItems).length > 0 && (
+                  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-red-800"></span>
+                )}
+              </div>
             </div>
           </div>
           {footerComponent ? (
@@ -215,7 +248,10 @@ const Banner = (props) => {
                   Comfort wear
                 </p>
                 <div className="flex w-full justify-end space-x-1 text-left md:mt-4 md:space-x-5">
-                  <button className="bg-black p-2 px-4 text-sm font-semibold uppercase tracking-widest text-white md:px-6 ">
+                  <button
+                    onClick={() => handleScroll('top-picks')}
+                    className="bg-black p-2 px-4 text-sm font-semibold uppercase tracking-widest text-white md:px-6 "
+                  >
                     Shop Top
                   </button>
                   <button
@@ -256,4 +292,5 @@ export default Banner;
 Banner.propTypes = {
   handleNav: PropTypes.func.isRequired,
   footerComponent: PropTypes.func,
+  handleScroll: PropTypes.func,
 };

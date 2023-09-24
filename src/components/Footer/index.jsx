@@ -29,8 +29,8 @@ function ShopSection() {
       <ul
         className={`space-y-2 overflow-hidden transition-all duration-500 ease-in-out md:text-[12.75px]${
           isOpen
-            ? 'translate-y-0 border-b-2 pb-5 opacity-100'
-            : '-translate-y-5 border-b-0 opacity-0'
+            ? ' block max-h-full translate-y-0 border-b-2 pb-5 opacity-100'
+            : ' hidden -translate-y-5 border-b-0 opacity-0'
         }`}
       >
         <li>Apparel</li>

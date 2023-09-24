@@ -23,7 +23,7 @@ const LimitedTimes = () => {
   ];
   return (
     <ViewPort>
-      <div className="m-auto mt-10 h-72 space-y-2 p-2 md:flex md:h-[400px] md:justify-center md:space-x-5 md:space-y-0 md:p-5 lg:h-[530px] lg:max-w-[1500px]">
+      <div className="m-auto mt-10 h-auto space-y-2 p-2 md:flex md:h-[400px] md:justify-center md:space-x-5 md:space-y-0 md:p-5 lg:h-[530px] lg:max-w-[1500px]">
         {items.map((item, index) => (
           <Item
             key={index}
