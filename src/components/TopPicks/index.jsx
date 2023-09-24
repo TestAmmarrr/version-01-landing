@@ -31,14 +31,14 @@ const TopPicks = (props) => {
     {
       name: 'Short Sleeve Button Down',
       price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 4,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
-      status: 'In stock, ready to ship',
     },
   ];
 
   return (
-    <div className="relative pt-80 md:pt-0">
+    <div className="relative pt-4 md:pt-0" id="top-picks">
       <div className="flex justify-between px-5 py-4 sm:px-10">
         <p className="text-xl font-bold sm:text-3xl">Top Picks</p>
         <button

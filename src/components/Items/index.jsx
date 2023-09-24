@@ -11,10 +11,16 @@ const Items = (props) => {
   const cartInfo = useContext(CartContext);
   const images = [
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 1,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
     },
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 2,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/LightGrey1.jpg?v=1569266885&width=720',
     },
@@ -23,26 +29,44 @@ const Items = (props) => {
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Woods2.gif?v=1569267045&width=1080',
     },
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 4,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
     },
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 5,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
     },
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 6,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
     },
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 7,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
     },
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 8,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
     },
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 9,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
     },
@@ -282,7 +306,7 @@ const Items = (props) => {
           </div>
         </div>
       ) : (
-        <Details addToCart={() => addToCart()} />
+        <Details addToCart={() => addToCart()} currentItem={currentItem} />
       )}
     </div>
   );

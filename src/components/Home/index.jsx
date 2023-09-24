@@ -103,6 +103,11 @@ function Home(props) {
     }
   };
 
+  const scrollToSection = (id) => {
+    console.log(id);
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="overflow-y-hidden">
       {currentItem ? (
@@ -112,7 +117,7 @@ function Home(props) {
         </>
       ) : (
         <>
-          <Banner handleNav={handleNav} />
+          <Banner handleNav={handleNav} handleScroll={scrollToSection} />
           <LimitedTimes />
           <TopPicks setActiveItem={setCurrentItem} />
         </>
