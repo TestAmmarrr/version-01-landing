@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 import CartContext from '../../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router';
 
 const CartContent = (props) => {
   const { close } = props;
+  const navigate = useNavigate();
 
   const cartInfo = useContext(CartContext);
 
@@ -21,6 +23,7 @@ const CartContent = (props) => {
     if (deepCopy[itemId].count < 1) {
       delete deepCopy[itemId];
     }
+    localStorage.setItem('cart', JSON.stringify(deepCopy));
     setCartItems(deepCopy);
   };
 
@@ -31,6 +34,7 @@ const CartContent = (props) => {
     if (value < 1) {
       delete deepCopy[itemId];
     }
+    localStorage.setItem('cart', JSON.stringify(deepCopy));
     setCartItems(deepCopy);
   };
 
@@ -50,7 +54,13 @@ const CartContent = (props) => {
         <p className=" py-2 text-center text-xs sm:text-sm">
           Shipping, Taxes, and Discount codes calculated at checkout
         </p>
-        <button className="mt-5 w-full border-none bg-black px-5 py-3 text-xs font-semibold uppercase tracking-widest text-white">
+        <button
+          onClick={() => {
+            navigate('/checkout');
+            close();
+          }}
+          className="mt-5 w-full border-none bg-black px-5 py-3 text-xs font-semibold uppercase tracking-widest text-white"
+        >
           Check Out
         </button>
       </div>

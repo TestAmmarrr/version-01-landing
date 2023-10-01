@@ -8,7 +8,7 @@ const Overlay = (props) => {
       onClick={() => disableOverlay()}
       className={`${
         overlayVisible
-          ? 'fixed inset-0 z-20 overflow-hidden bg-gray-500 opacity-50'
+          ? 'fixed inset-0 z-20 overflow-hidden bg-gray-500 opacity-50 backdrop-blur-3xl'
           : 'hidden'
       }`}
     ></div>

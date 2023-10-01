@@ -18,14 +18,72 @@ const oneSecond = 10000;
 
 // NAVSTYLES
 const NAV_FIXED =
-  'flex h-16 items-center justify-end px-5 text-white transition-transform duration-500 md:px-10 relative bg-transparent';
+  'block h-16 items-center justify-end px-5 text-white transition-transform duration-500 md:px-10 relative z-30 bg-transparent';
 const NAV_DYNAMIC =
-  'flex h-16 items-center justify-end px-5 text-white transition-transform duration-500 md:px-10 fixed inset-x-0 top-0 z-30 translate-y-0 bg-white';
+  'block h-16 items-center justify-end px-5 text-white transition-transform duration-500 md:px-10 fixed inset-x-0 top-0 z-30 translate-y-0 bg-white';
 const NAV_ITEMS_FIXED = 'flex space-x-5 text-right text-white';
 const NAV_ITEMS_DYNAMIC = 'flex space-x-5 text-right text-black';
 const NAV_SEARCH_ACTIVE = ' h-8 w-8 text-black';
 const NAV_SEARCH = ' h-8 w-8';
 
+const INSTOCK = [
+  {
+    name: 'Short Sleeve Button Down',
+    price: 8.5,
+    status: 'In stock, ready to ship',
+    itemId: 1,
+    img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
+  },
+  {
+    name: 'Short Sleeve Button Down',
+    price: 8.5,
+    status: 'In stock, ready to ship',
+    itemId: 2,
+    img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/LightGrey1.jpg?v=1569266885&width=720',
+  },
+  {
+    name: 'Short Sleeve Button Down',
+    price: 8.5,
+    status: 'In stock, ready to ship',
+    itemId: 4,
+    img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
+  },
+  {
+    name: 'Short Sleeve Button Down',
+    price: 8.5,
+    status: 'In stock, ready to ship',
+    itemId: 5,
+    img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
+  },
+  {
+    name: 'Short Sleeve Button Down',
+    price: 8.5,
+    status: 'In stock, ready to ship',
+    itemId: 6,
+    img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
+  },
+  {
+    name: 'Short Sleeve Button Down',
+    price: 8.5,
+    status: 'In stock, ready to ship',
+    itemId: 7,
+    img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
+  },
+  {
+    name: 'Short Sleeve Button Down',
+    price: 8.5,
+    status: 'In stock, ready to ship',
+    itemId: 8,
+    img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
+  },
+  {
+    name: 'Short Sleeve Button Down',
+    price: 8.5,
+    status: 'In stock, ready to ship',
+    itemId: 9,
+    img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080',
+  },
+];
 const Banner = (props) => {
   const { handleNav, footerComponent, handleScroll } = props;
 
@@ -37,6 +95,7 @@ const Banner = (props) => {
   const [showList, setShowList] = useState(false);
   const [search, setSearch] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchString, setSearchString] = useState('');
   const [currencies] = useState([
     {
       name: 'Pakistan',
@@ -124,28 +183,82 @@ const Banner = (props) => {
     }
   };
 
+  const getItems = (items) => {
+    if (!searchString || items.length === 0) {
+      return [];
+    }
+    return items.filter((item) => {
+      // Set name to empty string if name is null.
+      const name = `${item.name}` || '';
+      if (name.toLowerCase().includes(searchString.toLowerCase())) {
+        return item;
+      }
+      const price = `${item.price}` || '';
+      if (price.toLowerCase().includes(searchString.toLowerCase())) {
+        return item;
+      }
+      return false;
+    });
+  };
+
   const renderSearchBar = () => {
     return (
-      <div className="relative flex h-full w-full items-center justify-center bg-white">
-        <form className="relative z-50 flex h-4/5 w-4/5 max-w-[1500px] items-center">
-          <input
-            type="text"
-            aria-label="search"
-            autoFocus
-            placeholder="Search our store"
-            className="h-full w-full rounded-none border-black bg-white p-4 text-black focus:border-2 focus:outline-none"
-          />
-          <div className="absolute right-4 top-[10px]">
-            <PiMagnifyingGlassLight
-              className={search ? NAV_SEARCH_ACTIVE : NAV_SEARCH}
+      <>
+        <div className="relative flex h-full w-full items-center justify-center bg-white">
+          <form className="relative flex h-4/5 w-4/5 max-w-[1500px] items-center">
+            <input
+              type="text"
+              aria-label="search"
+              autoFocus
+              value={searchString}
+              onChange={(e) => setSearchString(e.target.value)}
+              placeholder="Search our store"
+              className="h-full w-full rounded-none border-black bg-white p-4 text-black focus:border-2 focus:outline-none"
+            />
+            <div className="absolute right-4 top-[10px]">
+              <PiMagnifyingGlassLight
+                className={search ? NAV_SEARCH_ACTIVE : NAV_SEARCH}
+              />
+            </div>
+          </form>
+          <div className="m-[inherit] pl-4">
+            <FaTimes
+              className="h-7 w-7 text-black"
               onClick={() => setSearch((prev) => !prev)}
             />
           </div>
-        </form>
-        <div className="ml-4">
-          <FaTimes className="h-7 w-7 text-black" />
         </div>
-      </div>
+        <div className="max-h-[70vh] min-h-[30vh] w-full overflow-auto bg-white px-4 ">
+          {getItems(INSTOCK).map((item) => (
+            <div key={item.id} className="block h-auto border-b text-black">
+              <div className="flex items-center pt-2">
+                <div className="relative w-[20%] sm:w-[5%] sm:py-4 sm:pl-0 sm:pr-4">
+                  <div className="flex-col p-2 before:block before:w-full before:pb-[150%]">
+                    <div className="">
+                      <img
+                        src={item.img}
+                        alt=""
+                        className="absolute left-0 top-0 block h-full w-full max-w-full border object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col justify-between space-y-0 pl-[4px] pr-[10px] sm:py-4">
+                  <div>
+                    <p className="text-sm">{item.name}</p>
+                    <p className="m-0 text-left text-sm sm:mt-2 ">
+                      <span className="font-semibold">Size:</span>S
+                    </p>
+                  </div>
+                </div>
+                <div className="m-0 w-[15%] p-0">
+                  <p className="text-xs font-bold">{` RS ${item.price}`}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
     );
   };
 
@@ -158,24 +271,28 @@ const Banner = (props) => {
 
   const renderNavItems = () => {
     return (
-      <>
-        <div className="flex-1 text-3xl font-bold uppercase">SYMPH DZLS.</div>
-        <div className={isScrolled ? NAV_ITEMS_DYNAMIC : NAV_ITEMS_FIXED}>
-          <PiMagnifyingGlassLight
-            className={search ? NAV_SEARCH_ACTIVE : NAV_SEARCH}
-            onClick={() => setSearch((prev) => !prev)}
-          />
-          <div className="relative">
-            <PiHandbag
-              className=" h-8 w-8 cursor-pointer"
-              onClick={() => handleNav('cart')}
+      <div className=" flex h-full w-full items-center justify-between">
+        <div className="inline-block flex-1 text-3xl font-bold uppercase">
+          SYMPH DZLS.
+        </div>
+        <div className="inline-block">
+          <div className={isScrolled ? NAV_ITEMS_DYNAMIC : NAV_ITEMS_FIXED}>
+            <PiMagnifyingGlassLight
+              className={search ? NAV_SEARCH_ACTIVE : NAV_SEARCH}
+              onClick={() => setSearch((prev) => !prev)}
             />
-            {Object.entries(cartItems).length > 0 && (
-              <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-red-800"></span>
-            )}
+            <div className="relative">
+              <PiHandbag
+                className=" h-8 w-8 cursor-pointer"
+                onClick={() => handleNav('cart')}
+              />
+              {Object.entries(cartItems).length > 0 && (
+                <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-red-800"></span>
+              )}
+            </div>
           </div>
         </div>
-      </>
+      </div>
     );
   };
 

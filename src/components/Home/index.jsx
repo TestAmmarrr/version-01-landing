@@ -89,8 +89,10 @@ function Home(props) {
     const { setCartItems, cartItems } = cartInfo;
     const item = currentItem;
     const deepCopy = JSON.parse(JSON.stringify(cartItems));
+    const cartStorage = JSON.parse(localStorage.getItem('cart'));
     if (deepCopy[item.itemId]) {
       deepCopy[item.itemId].count += 1;
+      localStorage.setItem('cart', JSON.stringify(deepCopy));
       setCartItems(deepCopy);
     } else {
       const newItem = {
@@ -100,16 +102,19 @@ function Home(props) {
         count: 1,
       };
       setCartItems((prev) => ({ ...prev, [item.itemId]: newItem }));
+      localStorage.setItem(
+        'cart',
+        JSON.stringify({ ...cartStorage, [item.itemId]: newItem }),
+      );
     }
   };
 
   const scrollToSection = (id) => {
-    console.log(id);
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div className="overflow-y-hidden">
+    <div>
       {currentItem ? (
         <>
           <Banner handleNav={handleNav} footerComponent={renderBannerFooter} />

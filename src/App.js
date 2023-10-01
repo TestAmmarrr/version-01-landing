@@ -15,6 +15,13 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    const cartStorage = JSON.parse(localStorage.getItem('cart'));
+    if (cartStorage) {
+      setCartItems(cartStorage);
+    }
+  }, []);
+
+  useEffect(() => {
     if (Object.entries(cartItems).length > 0 && !isOpen) {
       handleNav('cart');
     }
@@ -43,10 +50,14 @@ function App() {
       <CartContext.Provider value={{ cartItems, setCartItems }}>
         <BrowserRouter>
           <RouteHandler handleNav={handleNav} />
+          <Drawer
+            isOpen={isOpen}
+            close={() => setIsOpen(false)}
+            content={overlayContent}
+          />
+          <Overlay disableOverlay={() => setIsOpen(false)} overlayVisible={isOpen} />
         </BrowserRouter>
         <Footer />
-        <Overlay disableOverlay={() => setIsOpen(false)} overlayVisible={isOpen} />
-        <Drawer isOpen={isOpen} close={() => setIsOpen(false)} content={overlayContent} />
       </CartContext.Provider>
     </div>
   );

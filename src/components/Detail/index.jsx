@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 const Details = (props) => {
   const { addToCart, open, currentItem } = props;
   const [isOpen, setIsOpen] = React.useState(open);
-
-  const pathnames = location.pathname.split('/').filter((x) => x);
 
   return (
     <div className="h-auto max-w-[1500px] overflow-auto md:m-auto md:mt-5 md:grid md:grid-cols-2 md:space-x-3 md:px-5">
@@ -17,26 +14,10 @@ const Details = (props) => {
       </div>
       {/**Nav + Name */}
       <div className=" relative w-full px-5 py-2">
-        <div className="flex flex-col space-y-3">
-          <p className="text-center text-sm md:text-left">
-            <span>
-              <Link to={`/home`}>
-                Home
-                {' / '}
-              </Link>
-            </span>
-            <span>
-              <Link to={`/home/${pathnames[1]}`}>{`${pathnames[1]} /`}</Link>
-            </span>
-          </p>
-          <p className=" text-center text-3xl font-semibold  md:text-left">
-            {currentItem.name}
-          </p>
-        </div>
         {/**Price + Details */}
         <div>
           <p className="m-auto w-full border-b-[1px] py-5 text-center text-base font-medium md:text-left">
-            {currentItem.price}
+            {`RS ${currentItem.price}`}
           </p>
           <p className="p-5 text-center text-sm ">
             <div className="mr-4 inline-block h-2 w-2 animate-pulse rounded-full bg-green-500"></div>
