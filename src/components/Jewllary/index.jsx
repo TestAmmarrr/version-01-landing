@@ -1,14 +1,31 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import CartContext from '../../context/CartContext';
 import Banner from '../Banner';
 import { Link, useLocation } from 'react-router-dom';
 import Details from '../Detail';
+import CategoryList from '../CategoryList';
 
-const Items = (props) => {
+const Jewllary = (props) => {
   const { handleNav, activeItem } = props;
+
   const [currentItem, setCurrentItem] = useState(activeItem);
+  const [selectedCat, setSelectedCategory] = useState('sweatshirts');
+
+  const detailRef = useRef(null);
+  const listRef = useRef(null);
+
   const cartInfo = useContext(CartContext);
+
+  useEffect(() => {
+    if (currentItem) {
+      detailRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (!currentItem) {
+      listRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentItem]);
+
   const images = [
     {
       name: 'Short Sleeve Button Down',
@@ -25,6 +42,9 @@ const Items = (props) => {
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/LightGrey1.jpg?v=1569266885&width=720',
     },
     {
+      name: 'Short Sleeve Button Down',
+      price: 8.5,
+      status: 'In stock, ready to ship',
       itemId: 3,
       img: 'https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Woods2.gif?v=1569267045&width=1080',
     },
@@ -97,7 +117,7 @@ const Items = (props) => {
     return (
       <div className="absolute inset-x-0 bottom-0 w-full">
         <div className="relative mb-2 px-5">{getPath()}</div>
-        <div className="h-60 w-full bg-[#181515] px-8 py-9 md:flex md:h-48 md:items-center md:justify-between xl:h-36">
+        <div className="h-60 w-full bg-[#000000] px-8 py-9 md:flex md:h-48 md:items-center md:justify-between xl:h-36">
           <div className="md:w-1/2 md:space-y-4 md:text-left">
             <p className="w-full py-1 text-3xl font-semibold text-white md:text-4xl md:font-bold">
               Black Friday Sale
@@ -157,7 +177,9 @@ const Items = (props) => {
               key={value}
               className="block text-4xl font-semibold text-white sm:text-5xl"
             >
-              {value}
+              <Link to={location.pathname} onClick={() => setCurrentItem(null)}>
+                {value}
+              </Link>
             </span>
           );
         })}
@@ -169,92 +191,13 @@ const Items = (props) => {
     <div>
       <Banner handleNav={handleNav} footerComponent={renderBannerFooter} />
       {!currentItem ? (
-        <div className="m-auto w-auto max-w-[1500px]">
+        <div ref={listRef} className="m-auto w-auto max-w-[1500px]">
           <div className="relative h-auto">
-            <div>
-              <div className="flex h-auto flex-wrap pt-0">
-                <div className="w-1/2 cursor-pointer px-[2px] pb-[3px] sm:w-1/5 sm:p-4">
-                  <div className="relative flex-col before:block before:w-full before:pb-[100%]">
-                    <img
-                      src="https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080"
-                      alt=""
-                      className="absolute left-0 top-0 block h-full w-full max-w-full object-contain transition-all duration-500 ease-in-out hover:scale-105 hover:blur-md"
-                    />
-                    <p className="absolute inset-0 flex items-center justify-center text-lg text-white sm:text-sm">
-                      Sweatshirts
-                    </p>
-                  </div>
-                </div>
-                <div className="w-1/2 cursor-pointer px-[2px] sm:w-1/5 sm:p-4">
-                  <div
-                    style={{ backgroundColor: '#e5e5e5' }}
-                    className="relative flex-col before:block before:w-full before:pb-[100%]"
-                  >
-                    <div className="">
-                      <img
-                        src="https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080"
-                        alt=""
-                        className="absolute left-0 top-0 block h-full w-full max-w-full object-contain"
-                      />
-                      <p className="absolute inset-0 flex items-center justify-center text-lg text-white sm:text-sm">
-                        T-Shirts
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-1/2 cursor-pointer px-[2px] pb-[3px] sm:w-1/5 sm:p-4">
-                  <div
-                    style={{ backgroundColor: '#e5e5e5' }}
-                    className="relative flex-col before:block before:w-full before:pb-[100%]"
-                  >
-                    <div className="">
-                      <img
-                        src="https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080"
-                        alt=""
-                        className="absolute left-0 top-0 block h-full w-full max-w-full object-contain"
-                      />
-                      <p className="absolute inset-0 flex items-center justify-center text-lg text-white sm:text-sm">
-                        Shirts
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-1/2 cursor-pointer px-[2px] sm:w-1/5 sm:p-4">
-                  <div
-                    style={{ backgroundColor: '#e5e5e5' }}
-                    className="relative flex-col before:block before:w-full before:pb-[100%]"
-                  >
-                    <div className="">
-                      <img
-                        src="https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080"
-                        alt=""
-                        className="absolute left-0 top-0 block h-full w-full max-w-full object-contain"
-                      />
-                      <p className="absolute inset-0 flex items-center justify-center text-lg text-white sm:text-sm">
-                        Jeans
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-1/2 cursor-pointer px-[2px] sm:w-1/5 sm:p-4">
-                  <div
-                    style={{ backgroundColor: '#e5e5e5' }}
-                    className="relative flex-col before:block before:w-full before:pb-[100%]"
-                  >
-                    <div className="">
-                      <img
-                        src="https://impulse-theme-apparel.myshopify.com/cdn/shop/products/Grey3_b6162133-8df0-4963-ab88-86351ad88309.gif?v=1569267103&width=1080"
-                        alt=""
-                        className="absolute left-0 top-0 block h-full w-full max-w-full object-contain"
-                      />
-                      <p className="absolute inset-0 flex items-center justify-center text-lg text-white sm:text-sm">
-                        Hats
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CategoryList
+              selectedCat={selectedCat}
+              handleNewCategory={(cat) => setSelectedCategory(cat.toLowerCase())}
+              categoryList={['Sweatshirts', 'T-Shirts', 'Shirts', 'Jeans', 'Hats']}
+            />
             <div className="sticky top-20 z-10 flex flex-wrap items-center justify-between p-[2px] sm:p-5 md:relative md:top-0">
               <p className="hidden md:flex-1 md:text-base">{`${images.length} products`}</p>
               <div></div>
@@ -306,14 +249,16 @@ const Items = (props) => {
           </div>
         </div>
       ) : (
-        <Details addToCart={() => addToCart()} currentItem={currentItem} />
+        <div ref={detailRef}>
+          <Details addToCart={() => addToCart()} currentItem={currentItem} open={false} />
+        </div>
       )}
     </div>
   );
 };
 
-export default Items;
-Items.propTypes = {
+export default Jewllary;
+Jewllary.propTypes = {
   handleNav: PropTypes.func.isRequired,
-  activeItem: PropTypes.object.isRequired,
+  activeItem: PropTypes.object,
 };

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Banner from '../Banner';
 import LimitedTimes from '../LimitedTimes';
@@ -11,6 +11,12 @@ function Home(props) {
   const { handleNav } = props;
   const [currentItem, setCurrentItem] = useState(null);
   const cartInfo = useContext(CartContext);
+  const detailsRef = useRef(null);
+  useEffect(() => {
+    if (currentItem) {
+      detailsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentItem]);
 
   const renderBannerFooter = () => {
     return (
@@ -117,12 +123,22 @@ function Home(props) {
     <div>
       {currentItem ? (
         <>
-          <Banner handleNav={handleNav} footerComponent={renderBannerFooter} />
-          <Details addToCart={addToCart} currentItem={currentItem} />
+          <Banner
+            handleNav={handleNav}
+            footerComponent={renderBannerFooter}
+            setActiveItem={setCurrentItem}
+          />
+          <div ref={detailsRef}>
+            <Details addToCart={addToCart} currentItem={currentItem} open={false} />
+          </div>
         </>
       ) : (
         <>
-          <Banner handleNav={handleNav} handleScroll={scrollToSection} />
+          <Banner
+            handleNav={handleNav}
+            handleScroll={scrollToSection}
+            setActiveItem={setCurrentItem}
+          />
           <LimitedTimes />
           <TopPicks setActiveItem={setCurrentItem} />
         </>

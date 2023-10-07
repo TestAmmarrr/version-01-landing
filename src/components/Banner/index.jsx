@@ -85,7 +85,7 @@ const INSTOCK = [
   },
 ];
 const Banner = (props) => {
-  const { handleNav, footerComponent, handleScroll } = props;
+  const { handleNav, footerComponent, handleScroll, setActiveItem } = props;
 
   const cartInfo = useContext(CartContext);
 
@@ -230,7 +230,14 @@ const Banner = (props) => {
         </div>
         <div className="max-h-[70vh] min-h-[30vh] w-full overflow-auto bg-white px-4 ">
           {getItems(INSTOCK).map((item) => (
-            <div key={item.id} className="block h-auto border-b text-black">
+            <div
+              onClick={() => {
+                setActiveItem(item);
+                setSearch(false);
+              }}
+              key={item.id}
+              className="block h-auto border-b text-black"
+            >
               <div className="flex items-center pt-2">
                 <div className="relative w-[20%] sm:w-[5%] sm:py-4 sm:pl-0 sm:pr-4">
                   <div className="flex-col p-2 before:block before:w-full before:pb-[150%]">
@@ -461,4 +468,5 @@ Banner.propTypes = {
   handleNav: PropTypes.func.isRequired,
   footerComponent: PropTypes.func,
   handleScroll: PropTypes.func,
+  setActiveItem: PropTypes.func.isRequired,
 };

@@ -16,6 +16,9 @@ const Details = (props) => {
       <div className=" relative w-full px-5 py-2">
         {/**Price + Details */}
         <div>
+          <p className="m-auto w-full text-center text-base font-medium md:text-left">
+            {currentItem.name}
+          </p>
           <p className="m-auto w-full border-b-[1px] py-5 text-center text-base font-medium md:text-left">
             {`RS ${currentItem.price}`}
           </p>
